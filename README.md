@@ -13,8 +13,7 @@ This repository contains a Jupyter notebook for evaluating FART (Flavor Aroma Re
 
 ## Prerequisites
 
-- Python 3.8+
-- Conda or Miniconda
+- Python 3.11 or 3.12 (recommended; Python 3.14+ may have compatibility issues with some packages)
 - Git (for cloning the repository)
 - Access to HuggingFace models (for downloading pre-trained models)
 
@@ -27,26 +26,28 @@ git clone <repository-url>
 cd fart-chemberta-700k-augmented-smiles
 ```
 
-### 2. Create and Activate Conda Environment
-
-#### Option A: Using environment.yml (Recommended)
+### 2. Create and Activate Python Virtual Environment
 
 ```bash
-conda env create -f environment.yml
-conda activate flavorbert_env
-```
+# Create a virtual environment (using Python 3.11 or 3.12 is recommended)
+python3.11 -m venv venv
+# or
+python3.12 -m venv venv
 
-#### Option B: Using requirements.txt
+# Activate the virtual environment
+# On macOS/Linux:
+source venv/bin/activate
+# On Windows:
+# venv\Scripts\activate
 
-If you prefer using pip:
+# Upgrade pip, setuptools, and wheel
+pip install --upgrade pip setuptools wheel
 
-```bash
-conda create -n fart_eval python=3.8
-conda activate fart_eval
+# Install all dependencies
 pip install -r requirements.txt
 ```
 
-**Note:** The `requirements.txt` file contains many packages. If you encounter issues, we recommend using the `environment.yml` file which uses conda for better dependency management, especially for packages like `rdkit` and `pytorch`.
+**Note:** If you encounter build errors, ensure you have the latest versions of pip, setuptools, and wheel installed. Some packages may require compilation, so make sure you have the necessary build tools installed on your system.
 
 ### 3. Verify Installation
 
@@ -66,8 +67,8 @@ fart-chemberta-700k-augmented-smiles/
 │       ├── fart_val.csv
 │       └── fart_test.csv
 ├── fart_evaluate.ipynb
-├── environment.yml
-└── requirements.txt
+├── requirements.txt
+└── venv/          (created after setup)
 ```
 
 ## Configuration
@@ -113,7 +114,14 @@ augmentation_numbers = [10, 10, 10, 10, 10]  # Augmentation per class
 ### 1. Start Jupyter Lab
 
 ```bash
-conda activate flavorbert_env  # or your environment name
+# Make sure your virtual environment is activated
+source venv/bin/activate  # On macOS/Linux
+# venv\Scripts\activate   # On Windows
+
+# Install jupyter if not already installed
+pip install jupyter jupyterlab
+
+# Start Jupyter Lab
 jupyter lab
 ```
 
@@ -179,9 +187,18 @@ The notebook displays all results inline without saving files. You'll see:
 
 **Solution**:
 ```bash
-conda activate flavorbert_env
-conda install -c conda-forge rdkit
-pip install transformers datasets scikit-learn
+# Make sure your virtual environment is activated
+source venv/bin/activate
+
+# Reinstall requirements
+pip install -r requirements.txt
+
+# If rdkit installation fails, try installing it separately:
+# pip install rdkit
+
+# On macOS, if pip installation fails, you can try using Homebrew:
+# brew install rdkit
+# pip install rdkit-pypi
 ```
 
 #### 2. CUDA/GPU Issues
@@ -193,8 +210,9 @@ pip install transformers datasets scikit-learn
 - Use CPU by setting device in the notebook (add after imports):
   ```python
   import torch
-  torch.device("cpu")
+  device = torch.device("cpu")  # Force CPU usage
   ```
+- Verify PyTorch CUDA installation: `python -c "import torch; print(torch.cuda.is_available())"`
 
 #### 3. Dataset Not Found
 
@@ -237,6 +255,16 @@ pip install transformers datasets scikit-learn
 - Reduce `max_length` (e.g., from 512 to 256)
 - Disable augmentation if enabled
 - Close other applications to free up memory
+
+#### 7. Package Installation/Build Errors
+
+**Problem**: Errors during `pip install -r requirements.txt` (e.g., compilation errors)
+
+**Solution**:
+- Ensure you're using Python 3.11 or 3.12 (Python 3.14+ may have compatibility issues)
+- Upgrade pip, setuptools, and wheel: `pip install --upgrade pip setuptools wheel`
+- On macOS, ensure Xcode command line tools are installed: `xcode-select --install`
+- On Linux, install build dependencies: `sudo apt-get install build-essential python3-dev` (Ubuntu/Debian) or equivalent for your distribution
 
 ### Getting Help
 
