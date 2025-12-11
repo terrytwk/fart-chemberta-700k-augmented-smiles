@@ -2,6 +2,8 @@
 
 This repository contains a Jupyter notebook for evaluating FART (Flavor Aroma Recognition Task) models. The notebook trains a RoBERTa classifier on SMILES molecular representations and provides comprehensive evaluation metrics including ROC curves, confusion matrices, and accuracy metrics.
 
+**Note:** This repository is built on the [FART (Flavor Analysis and Recognition Transformer) repository](https://github.com/fart-lab/fart) by fart-lab, which provides the original FART models and dataset.
+
 ## 📋 Table of Contents
 
 - [Prerequisites](#prerequisites)
@@ -297,7 +299,8 @@ Optional columns:
 
 ## Citation
 
-If you use this code, please cite the relevant papers:
+If you use this code, please cite the relevant papers and repositories:
+- [FART (Flavor Analysis and Recognition Transformer) repository](https://github.com/fart-lab/fart) - The original FART repository this work is built upon
 - FART dataset paper
 - Model checkpoint paper (e.g., SMILES tokenized PubChem)
 - Any other relevant citations
